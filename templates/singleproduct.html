@@ -1,0 +1,259 @@
+{% extends 'main/base.html' %}
+{% block content %}
+{% load static %}
+<!-- Product Details Area Start -->
+<div class="product-details-area pt-100px pb-100px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-sm-12 col-xs-12 mb-lm-30px mb-md-30px mb-sm-30px">
+                <!-- Swiper -->
+                <div class="swiper-container zoom-top">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img class="img-responsive m-auto" src="{{ prod.image.url }}" alt="">
+                            <a class="venobox full-preview" data-gall="myGallery" href="{{ prod.image.url }}">
+                                <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <img class="img-responsive m-auto" src="{{ prod.image2.url }}" alt="">
+                            <a class="venobox full-preview" data-gall="myGallery" href="{{ prod.image2.url }}">
+                                <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <img class="img-responsive m-auto" src="{{ prod.image3.url }}" alt="">
+                            <a class="venobox full-preview" data-gall="myGallery" href="{{ prod.image3.url }}">
+                                <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <img class="img-responsive m-auto" src="{{ prod.image4.url }}" alt="">
+                            <a class="venobox full-preview" data-gall="myGallery" href="{{ prod.image4.url }}">
+                                <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-container mt-20px zoom-thumbs slider-nav-style-1 small-nav">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img class="img-responsive m-auto" src="{{ prod.image.url }}" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img class="img-responsive m-auto" src="{{ prod.image2.url }}" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img class="img-responsive m-auto" src="{{ prod.image3.url }}" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img class="img-responsive m-auto" src="{{ prod.image4.url }}" alt="">
+                        </div>
+                    </div>
+                    <div class="swiper-buttons">
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-12 col-xs-12" data-aos="fade-up" data-aos-delay="200">
+                <div class="product-details-content quickview-content ml-25px">
+                    <h2>{{ prod.name }}</h2>
+                    <div class="pricing-meta">
+                        <ul class="d-flex">
+                            <li class="new-price"><i class="fa fa-rupee" style="color:red"></i> {{ prod.price }}</li>
+                        </ul>
+                    </div>
+                    <p class="mt-30px">{{ prod.information | safe }}</p>
+
+                    <div class="pro-details-categories-info pro-details-same-style d-flex m-0">
+                        <span>Categories: </span>
+                        <ul class="d-flex">
+                            <li>{{ prod.categories }}</li>
+                        </ul>
+                    </div>
+                    <div class="pro-details-categories-info pro-details-same-style d-flex m-0">
+                        <span>Brand: </span>
+                        <ul class="d-flex">
+                                <li><a href="#">{{ prod.brand }}</a></li>
+                        </ul>
+                    </div>
+                    <div class="pro-details-quality">
+                        <div class="pro-details-cart">
+                            {% if user.is_authenticated %}
+                                {% if prod.quantity < 1 %}
+                                    <button class="add-cart" style="background:gray"><a href="#" style="color:white"> Out of stock</a></button>
+                                {% else %}
+                                    <button class="add-cart"><a href="{% url 'cart_add' prod.id %}" style="color:white">Add to cart</a></button>
+                                {% endif %}
+                            {% else %}
+                                {% if prod.quantity < 1 %}
+                                    <button class="add-cart" style="background:gray"><a href="#" style="color:white"> Out of stock</a></button>
+                                {% else %}
+                                    <button class="add-cart"><a href="{% url 'login'  %}" style="color:white">Add To Cart</a></button>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="pro-details-compare-wishlist pro-details-wishlist ">
+                            <a href="wishlist.html"><i class="pe-7s-like"></i></a>
+                        </div>
+                        <div class="pro-details-compare-wishlist pro-details-wishlist ">
+                            <a href="compare.html"><i class="pe-7s-refresh-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- product details description area start -->
+                <div class="description-review-wrapper">
+                    <div class="description-review-topbar nav">
+                        <button data-bs-toggle="tab" data-bs-target="#des-details2">Information</button>
+                        <button class="active" data-bs-toggle="tab" data-bs-target="#des-details1">Description</button>
+                        <button data-bs-toggle="tab" data-bs-target="#des-details3">Reviews ({{ reviews.count }})</button>
+                    </div>
+                    <div class="tab-content description-review-bottom">
+                        <div id="des-details2" class="tab-pane">
+                            <div class="product-anotherinfo-wrapper text-start">
+                                <ul>
+                                    <li>{{ prod.information | safe }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="des-details1" class="tab-pane active">
+                            <div class="product-description-wrapper">
+                                <p>{{ prod.description | safe }}</p>
+                            </div>
+                        </div>
+                        <div id="des-details3" class="tab-pane">
+                            {% for i in reviews %}
+                                <div class="single-review child-review">
+                                    <div class="review-content">
+                                        <div class="review-top-wrap">
+                                            <div class="review-left">
+                                                <div class="review-name">
+                                                    <h4>{{ i.user }}</h4>
+                                                </div>
+                                                {% if i.ratings > 0 %}
+                                                  <i class="fa fa-star  {% if i.ratings > 0 %} checked {% endif %}"></i>
+                                                  <i class="fa fa-star  {% if i.ratings > 1 %} checked {% endif %}"></i>
+                                                  <i class="fa fa-star  {% if i.ratings > 2 %} checked {% endif %}"></i>
+                                                  <i class="fa fa-star  {% if i.ratings > 3 %} checked {% endif %}"></i>
+                                                  <i class="fa fa-star  {% if i.ratings > 4 %} checked {% endif %}"></i>
+                                                {% else %}
+                                                  <p>no rating</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="review-bottom">
+                                            <p>{{ i.review_desp }}</p>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="review-wrapper">
+                                        <div class="col-lg-12">
+                                            <div class="ratting-form-wrapper pl-50">
+                                                <h3>Add a Review</h3>
+                                                <div class="ratting-form">
+                                                    <form method="get" action="{% url 'review_page' prod.id %}">
+                                                        {% csrf_token %}
+                                                        <div class="star-box">
+                                                            <span>Your rating:</span>
+                                                            <div class="rate">
+                                                                <input type="radio" id="star5" name="rate" value="5" />
+                                                                <label for="star5" title="text">5 stars</label>
+                                                                <input type="radio" id="star4" name="rate" value="4" />
+                                                                <label for="star4" title="text">4 stars</label>
+                                                                <input type="radio" id="star3" name="rate" value="3" />
+                                                                <label for="star3" title="text">3 stars</label>
+                                                                <input type="radio" id="star2" name="rate" value="2" />
+                                                                <label for="star2" title="text">2 stars</label>
+                                                                <input type="radio" id="star1" name="rate" value="1" />
+                                                                <label for="star1" title="text">1 star</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="rating-form-style form-submit">
+                                                                    {% if user.is_authenticated %}
+                                                                        <textarea name="Your Review" placeholder="Message" required></textarea>
+                                                                        <button class="btn btn-primary btn-hover-color-primary " type="submit" value="Submit">Submit</button>
+                                                                    {% else %}
+                                                                        <textarea name="Your Review" placeholder="Message" required></textarea>
+                                                                        <button class="btn btn-primary btn-hover-color-primary " onclick="return confirm('please login')">Submit</button>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- product details description area end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Related Products Area Start -->
+<div class="product-area related-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title text-center m-0">
+                    <h2 class="title">Related Products</h2>
+                    <p>There are many variations of passages of Lorem Ipsum available</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="new-product-slider swiper-container slider-nav-style-1">
+                    <div class="swiper-wrapper">
+                        {% for related_product in related_products %}
+                        <div class="swiper-slide">
+                            <!-- Single Product -->
+                            <div class="product">
+                                <span class="badges">
+                                    <span class="new">{{ related_product.contion }}</span>
+                                </span>
+                                <div class="thumb">
+                                    <a href="{% url 'singleproduct' related_product.id %}" class="image">
+                                        <img src="{{ related_product.image.url }}" alt="Product" />
+                                        <img class="hover-image" src="{{ related_product.image.url }}" alt="Product" />
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <span class="category"><a href="#">{{ related_product.category }}</a></span>
+                                    <h5 class="title"><a href="{% url 'singleproduct' related_product.id %}">{{ related_product.name | truncatewords:4 }}</a></h5>
+                                    <span class="price"><span class="new"><i class="fa fa-rupee"></i> {{ related_product.price }}</span></span>
+                                </div>
+                                <div class="actions">
+                                    <button title="Add To Cart" class="action add-to-cart" data-bs-toggle="modal" data-bs-target="#exampleModal-Cart-{{forloop.counter}}"><i class="pe-7s-shopbag"></i></button>
+                                    <button class="action wishlist" title="Wishlist" data-bs-toggle="modal" data-bs-target="#exampleModal-Wishlist-{{forloop.counter}}"><i class="pe-7s-like"></i></button>
+                                    <button class="action quickview" data-link-action="quickview" title="Quick view" data-bs-toggle="modal" data-bs-target="#exampleModal-{{forloop.counter}}"><i class="pe-7s-look"></i></button>
+                                    <button class="action compare" title="Compare" data-bs-toggle="modal" data-bs-target="#exampleModal-Compare"><i class="pe-7s-refresh-2"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-buttons">
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Related Products Area End -->
+
+{% endblock %}
